@@ -1,4 +1,3 @@
-import { service } from "../../service/service";
 
 const INITIAL_STATE = {
 
@@ -22,7 +21,29 @@ const cartReducer = (state = INITIAL_STATE, action) => {
             return {
 
                 ...state, 
-                cart: [...state.cart, {...action.payload, count: 0}]
+                cart: [...state.cart, {...action.payload, count: 1,
+                
+                    attributes: action.payload.attributes.map(attr => {
+                            return {
+                                ...attr,
+                                items: [...attr.items.map((value, i) => {
+                                        if (i === 0) {
+                                            return {
+                                                ...value,
+                                                chosenItem: true
+                                            }
+
+                                        }
+                                         return {
+                                            ...value,
+                                            chosenItem: false
+                                        };
+                                })]
+                            }
+                    
+                    })
+                
+                }]
 
             };
 
@@ -52,9 +73,9 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                         cart: state.cart.map(item => {
                             if (item.id === action.payload.id) {
 
-                                if (item.count === 0) {
+                                if (item.count === 1) {
                                     return {
-                                        ...item, count: 0
+                                        ...item, count: 1
                                     }
                                 }
                                 return {
@@ -66,6 +87,61 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                         })
         
                     };
+
+
+                    case "SET_UP_CHOSEN_ATTRIBUTE":
+                        return {
+                                
+                            ...state, 
+                            cart: [...state.cart.map(item => {
+                                if (item.id === action.payload.productID) {
+                                    return {
+                                        ...item,
+                                        attributes: item.attributes.map(attr => {
+                                            if (attr.id === action.payload.idOfAttribute) {
+                                                return {
+                                                    ...attr,
+                                                    items: [...attr.items.map(value => {
+                                                            if (value.id === action.payload.idValue) {
+                                                                return {
+                                                                    ...value,
+                                                                    chosenItem: true
+                                                                }
+
+                                                            }
+                                                             return {
+                                                                ...value,
+                                                                chosenItem: false
+                                                            };
+                                                    })]
+                                                }
+                                            }
+
+                                            return attr;
+                                        })
+                                    }
+                                }
+
+                                return item;
+                            })]
+            
+                        };
+
+                        case "TRIGGER_TO_CHANGE_CURRENCY":
+
+                            return {
+                
+                                ...state, 
+                                cart: state.cart.map(item => {
+                                    return {
+                                        ...item,
+                                            currentCurrency: item.prices.find(currency => {
+                                            return currency.currency.label === action.payload
+                                            })
+                                    }
+                                })
+                
+                            };
 
             
 
@@ -97,6 +173,23 @@ export function DecreaseItemCreator(product) {
     }
 }
 
+
+export function setUpChosenAttributesCreator(product) {
+    return {
+        type: "SET_UP_CHOSEN_ATTRIBUTE",
+        payload: product
+    }
+}
+
+
+
+export function triggerCreator(label) {
+ 
+    return {
+        type: "TRIGGER_TO_CHANGE_CURRENCY",
+        payload: label
+    }
+}
 
 export default cartReducer;
 

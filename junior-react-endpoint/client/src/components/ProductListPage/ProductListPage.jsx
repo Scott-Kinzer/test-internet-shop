@@ -29,7 +29,7 @@ import { withRouter } from '../../withRouter/withRouter';
   render() {
     return (
       <div>
-          <h2>{""+this.props.products.products.name.toUpperCase()}</h2>
+          <h2 style={{marginTop: '80px'}}>{""+this.props.products.products.name.toUpperCase()}</h2>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
             {this.props.products.products.products.map((item, id) => <ProductItem key={id} product={item} />)}
             </div>

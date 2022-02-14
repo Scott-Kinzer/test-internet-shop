@@ -4,7 +4,8 @@ const INITIAL_STATE = {
 
     products: {
         name: "",
-        products: []
+        products: [],
+        chosenCurrency: "USD"
     }
 };
 
@@ -17,9 +18,18 @@ const productReducer = (state = INITIAL_STATE, action) => {
 
             return {
 
-                ...state, products: {
+                ...state, 
+                products: {
+                    ...state.products,
                     name: "",
-                    products: [...action.payload]
+                    products: [...action.payload.map(prod => {
+                        return {
+                            ...prod,
+                            currentCurrency: prod.prices.find(currency => {
+                               return currency.currency.label === state.products.chosenCurrency
+                            })
+                        }
+                    })]
                 }
 
             };
@@ -28,7 +38,36 @@ const productReducer = (state = INITIAL_STATE, action) => {
 
             return {
                 ...state, products: {
-                    ...action.payload
+                    ...state.products,
+                    ...action.payload,
+                    products: [...action.payload.products.map(prod => {
+                        console.log(prod, "PROD");
+                        return {
+                            ...prod,
+                            currentCurrency: prod.prices.find(currency => {
+                               return currency.currency.label === state.products.chosenCurrency
+                            })
+                        }
+                    })]
+                }
+            }
+
+            case "SET_UP_CURRENCY": 
+
+            return {
+                ...state, 
+                products: {
+                    ...state.products,
+                    chosenCurrency: action.payload,
+                    products: [...state.products.products.map(prod => {
+                        return {
+                            ...prod,
+                            currentCurrency: prod.prices.find(currency => {
+                               return currency.currency.label === action.payload
+                            })
+                        }
+                    })],
+
                 }
             }
 
@@ -52,12 +91,19 @@ function setUpItemsCategoriesCreator(object) {
     }
 }
 
+export function setUpCurrencyCreator(currenc) {
+    return {
+        type: "SET_UP_CURRENCY",
+        payload: currenc
+    }
+}
+
+
 export function fetchAllProductsThunk() {
     
     return async function fetchProducts(dispatch) {
 
         const response = await service.fetchAllProducts();
-        // console.log(response, "REESPONSE");
         dispatch(setUpItemsCreator(response))
     }
 }

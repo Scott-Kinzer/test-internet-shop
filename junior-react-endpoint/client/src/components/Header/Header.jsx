@@ -6,16 +6,23 @@ import Update from '../../icons/update.svg';
 import { NavLink } from 'react-router-dom';
 import PopUpCart from '../PopUpCart/PopUpCart';
 import { connect } from 'react-redux';
+import { setUpCurrencyCreator } from '../../redux/Products/product.reducer';
 
  class Header extends Component {
 
     state = {
         activeId: 0,
-        isPopUpActive: false
+        isPopUpActive: false,
+        value: "USD"
     }
 
      handlePopUp = () => {
         this.setState({isPopUpActive: !this.state.isPopUpActive});
+    }
+
+    handleChange = (e) => {
+        this.setState({value: e.target.value});
+        this.props.setUpCurrencyCreator(e.target.value);
     }
 
     render() {
@@ -63,14 +70,21 @@ import { connect } from 'react-redux';
                 </div>
 
                 <div className={s.rightSideNav}>
-                    <select value={"$"}>
-                        <option value="$">$</option>
-                        <option value="$">$</option>
-                        <option value="$">$</option>
+                    <select value={this.state.value} onChange={this.handleChange} >
+                        <option value="USD">USD $</option>
+                        <option value="GBP">GBP £</option>
+                        <option value="AUD">AUD A$</option>
+                        <option value="JPY">JPY ¥</option>
+                        <option value="RUB">RUB ₽</option>
+
+
                     </select>
 
-                    <div className={s.cartWrapper}>
-                        <img onClick={this.handlePopUp} className={s.cart} src={Cart} alt="" />
+                    <div className={s.cartWrapper}> 
+                        <img onClick={() => {
+                            this.handlePopUp();
+                            this.props.handleCart();
+                        }} className={s.cart} src={Cart} alt="" />
                         <div className={s.circleWrapper}>{this.props.carts.length}</div>
                     </div>
                     
@@ -92,4 +106,11 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = dispatch => {
+    return {
+        setUpCurrencyCreator: (product) => dispatch(setUpCurrencyCreator(product)),
+ 
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
