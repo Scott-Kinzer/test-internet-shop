@@ -87,16 +87,7 @@ query {
   
             `
         }).then(data => data.data).then(categories => {
-            // let items = [];
-            // for (let obj of categories.categories) {
-            //     items = items.concat(...obj["products"])
-            // }
-            // console.log(items);
-            // return items;
-
-
-            console.log(categories);
-
+      
             return categories.category;
         })
     }

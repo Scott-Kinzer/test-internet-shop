@@ -29,7 +29,6 @@ class ProductItem extends Component {
   render() {
 
     const {product} = this.props;
-    console.log(this.props)
     return (
       <div 
 

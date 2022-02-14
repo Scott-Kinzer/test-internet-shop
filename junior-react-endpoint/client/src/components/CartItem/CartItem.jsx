@@ -47,7 +47,7 @@ import { DecreaseItemCreator, IncreaseItemCreator, setUpChosenAttributesCreator 
 
 
 
-function attributeChecker(attributes, product, setUpChosenAttributesCreator ) {
+export function attributeChecker(attributes, product, setUpChosenAttributesCreator ) {
     return (
         <div style={{display: "flex", flexWrap: "wrap"}}>
             {attributes.map(obj => {

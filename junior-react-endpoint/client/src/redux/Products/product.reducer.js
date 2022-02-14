@@ -41,7 +41,6 @@ const productReducer = (state = INITIAL_STATE, action) => {
                     ...state.products,
                     ...action.payload,
                     products: [...action.payload.products.map(prod => {
-                        console.log(prod, "PROD");
                         return {
                             ...prod,
                             currentCurrency: prod.prices.find(currency => {

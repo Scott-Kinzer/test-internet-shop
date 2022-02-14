@@ -143,6 +143,20 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                 
                             };
 
+                            case "SET_UP_PRODUCT_FROM_DETAILS":
+
+                    
+
+                            return {
+                                    
+                                ...state, 
+                                cart: [...state.cart.filter(item => {
+                                    return item.id !== action.payload.id
+                                }), {...action.payload, count: 1}]
+                
+                            };
+
+
             
 
         default: return state;
@@ -177,6 +191,13 @@ export function DecreaseItemCreator(product) {
 export function setUpChosenAttributesCreator(product) {
     return {
         type: "SET_UP_CHOSEN_ATTRIBUTE",
+        payload: product
+    }
+}
+
+export function setUpChosenProductFromDetails(product) {
+    return {
+        type: "SET_UP_PRODUCT_FROM_DETAILS",
         payload: product
     }
 }
