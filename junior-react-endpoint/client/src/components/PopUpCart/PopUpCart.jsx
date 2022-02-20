@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CartItem from '../CartItem/CartItem';
 
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import s from './popUp.module.css';
 import { triggerCreator } from '../../redux/Cart/cart.reducer';
@@ -10,7 +11,6 @@ class PopUpCart extends Component {
 
 
   componentDidMount() {
-    console.log(this.props);
     this.props.triggerCreator(this.props.value);
   }
 
@@ -25,18 +25,27 @@ class PopUpCart extends Component {
     const items = this.props.productsCart;
     return (
       <div className={s.popUpWrapper}>
-        My bag, {items.length} items
+        <div>My bag, {items.length} items</div>
         <div className={s.popUpSubWrapper}>
           {items.map(product => {
-            return <CartItem item={product} />
+            return <CartItem key={product.id}  item={product} />
           })}
         </div>
         {!!items.length &&
 
-          <div>Total:
-
-            {helperTotalCount(items) }
+          <div className={s.totalWrapper}>
+           <div style={{display: 'flex', justifyContent: 'space-around', width: '100%'}}>
+             <div>Total:</div>
+             <div>
+            {helperTotalCount(items).toFixed(3) }
             {items[0].currentCurrency.currency.symbol}
+            </div>
+           </div>
+
+          <button className={s.goCart}>
+          <NavLink style={{textDecoration: 'none'}} to="/cart" >View bag</NavLink>
+          </button>
+            
 
           </div>
         }
@@ -48,8 +57,6 @@ class PopUpCart extends Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log(state.products, "STATE TO PROPS");
-
   return {
     value: state.products.products.chosenCurrency
   }
@@ -70,7 +77,6 @@ function helperTotalCount(arr) {
   let total = 0;
   let currentSymbol = arr[0].currentCurrency.currency.symbol;
   arr.forEach(element => {
-    console.log(element)
     total += (element.currentCurrency.amount * element.count);
   });
 

@@ -53,7 +53,6 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     
                     ...state, 
                     cart: state.cart.map(item => {
-                        console.log(action.payload);
                         if (item.id === action.payload.id) {
                             return {
                                 ...item, count: item.count + 1
@@ -145,8 +144,6 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 
                             case "SET_UP_PRODUCT_FROM_DETAILS":
 
-                    
-
                             return {
                                     
                                 ...state, 
@@ -155,6 +152,16 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                                 }), {...action.payload, count: 1}]
                 
                             };
+
+                            case "REMOVE_FROM_CART":
+
+                                return {
+                                    ...state, 
+                                    cart: [...state.cart.filter(item => {
+                                        return item.id !== action.payload;
+                                    })]
+                    
+                                };
 
 
             
@@ -202,6 +209,13 @@ export function setUpChosenProductFromDetails(product) {
     }
 }
 
+
+export function removeFromCart(id) {
+    return {
+        type: "REMOVE_FROM_CART",
+        payload: id
+    }
+}
 
 
 export function triggerCreator(label) {

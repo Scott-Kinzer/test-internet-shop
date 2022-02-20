@@ -10,7 +10,6 @@ import { withRouter } from '../../withRouter/withRouter';
     componentDidMount() {
 
         const productCategory = this.props.params.productsCategory;
-        console.log(productCategory);
         this.props.fetchCurrentProductsThunk(productCategory);
         
     }
@@ -19,8 +18,7 @@ import { withRouter } from '../../withRouter/withRouter';
     componentDidUpdate(prevProps, prevState) {
         if (this.props.params.productsCategory !== prevProps.params.productsCategory)
         {
-        
-
+      
             const productCategory = this.props.params.productsCategory;
             this.props.fetchCurrentProductsThunk(productCategory);
         }
@@ -40,7 +38,6 @@ import { withRouter } from '../../withRouter/withRouter';
 }
 
 const mapStateToProps = (state) => {
-    console.log(state.products, "STAAAATTEEE");
     return {
         products: state.products
     }

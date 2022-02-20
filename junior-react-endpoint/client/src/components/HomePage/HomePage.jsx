@@ -12,7 +12,6 @@ import { fetchAllProductsThunk } from '../../redux/Products/product.reducer';
     }
     
   render() {
-    console.log(this.props.products.products);
     return (
         <>
         <h2 style={{marginTop: '80px'}}>ALL</h2>

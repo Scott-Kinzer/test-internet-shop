@@ -24,7 +24,7 @@
 .rightSideProductDetails {
     display: flex;
     flex-direction: column;
-    
+    margin-left: 50px;
     justify-content: space-between;
 }
 
@@ -33,12 +33,14 @@
     margin-top: 40px;
 }
 
-.productAmount {
-    margin-top: 40px;
-}
+
 
 .cartBtn {
     margin-top: 20px;
+    width: 292px;
+    height: 52px;
+    background: #5ECE7B;
+    color: white;
 }
 
 .descrProduct {

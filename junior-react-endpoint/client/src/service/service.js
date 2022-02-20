@@ -43,7 +43,6 @@ import { client } from "../apollo-client/apollo.client";
             for (let obj of categories.categories) {
                 items = items.concat(...obj["products"])
             }
-            // console.log(items);
             return items;
 
         })

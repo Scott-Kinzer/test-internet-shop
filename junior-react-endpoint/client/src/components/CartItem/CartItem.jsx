@@ -3,23 +3,22 @@ import React, { Component } from 'react'
 import s from './cartitem.module.css';
 
 import {connect} from 'react-redux';
-import { DecreaseItemCreator, IncreaseItemCreator, setUpChosenAttributesCreator } from '../../redux/Cart/cart.reducer';
+import { DecreaseItemCreator, IncreaseItemCreator, removeFromCart, setUpChosenAttributesCreator } from '../../redux/Cart/cart.reducer';
 
  class CartItem extends Component {
+     
   render() {
     const product = this.props.item;
-    console.log(product);
-
-    console.log(this.props);
     return (
       <div className={s.cartItemWrapper}
-      
-      >
+        
+      >     
+     
           <div  className={s.leftSideCart}>
 
                <div> {product.name}</div>
                 <div>{product.currentCurrency.currency.symbol} {product.currentCurrency.amount * product.count}</div>
-
+                <button onClick={() => this.props.removeFromCart(product.id)}>Delete</button>
                 {!!product.attributes.length && <div>{
                         attributeChecker(product.attributes, product, this.props.setUpChosenAttributesCreator)
                 }</div>}
@@ -59,13 +58,13 @@ export function attributeChecker(attributes, product, setUpChosenAttributesCreat
                             })
                         }}  style={
                             item.chosenItem ? 
-                            {width: "30px", height: "30px", background:`${item.value}`, border: "1px solid black"}:
+                            {width: "30px", height: "30px", margin: '4px',background:`black`, color: 'white',border: "1px solid black"}:
                          {width: "30px", height: "30px", background:`${item.value}`}
                          }></div>
                     })
                 } else {
                     return obj.items.map(item => {
-                        return <div style={item.chosenItem ? {border: "1px solid black"} : {}}
+                        return <div style={item.chosenItem ? {border: "1px solid black", background: 'black', margin: '4px', color: 'white', cursor: 'pointer'} : {}}
                         onClick={() => {
                             setUpChosenAttributesCreator({productID: product.id, 
                                 idOfAttribute: obj.id, idValue: item.id
@@ -91,7 +90,9 @@ const mapStateToProps = (state) => {
         IncreaseItemCreator: (product) => dispatch(IncreaseItemCreator(product)),
         DecreaseItemCreator: (product) => dispatch(DecreaseItemCreator(product)),
         setUpChosenAttributesCreator: ({productID, idOfAttribute, idValue}) => 
-        dispatch(setUpChosenAttributesCreator({productID, idOfAttribute, idValue}))
+        dispatch(setUpChosenAttributesCreator({productID, idOfAttribute, idValue})),
+        removeFromCart: (id) => dispatch(removeFromCart(id))
+
 
       }
   }

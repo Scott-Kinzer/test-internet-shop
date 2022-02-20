@@ -40,7 +40,6 @@ const detailsReducer = (state = INITIAL_STATE, action) => {
 
             case "SET_UP_PRODUCT_DETAILS_ATTRIBUTE":
 
-            console.log(action.payload);
                 return {
                     ...state, 
                     details: {
@@ -71,6 +70,19 @@ const detailsReducer = (state = INITIAL_STATE, action) => {
                     }
                     
                 }
+                case "TRIGGER_TO_CHANGE_CURRENCY_DETAILS":
+
+                            return {
+                
+                                ...state, 
+                                details: {
+                                    ...state.details,
+                                    currentCurrency: state.details.prices.find(currency => {
+                                        return currency.currency.label === action.payload
+                                        })
+                                }
+                
+                            };
 
             
 
@@ -95,6 +107,14 @@ export function setUpProductDetailsChosenAttributeCreator(product) {
     }
 }
 
+
+export function triggerCreatorDetails(label) {
+ 
+    return {
+        type: "TRIGGER_TO_CHANGE_CURRENCY_DETAILS",
+        payload: label
+    }
+}
 
 
 
